@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rosetta — Design System & Figma Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #0D0D0F;
+    --ink-mid:   #3A3A45;
+    --ink-soft:  #8888A0;
+    --surface:   #F7F6F2;
+    --surface-2: #EFEDE8;
+    --surface-3: #E3E0D8;
+    --accent:    #C84B2F;
+    --accent-2:  #1A6B5C;
+    --gold:      #C9A84C;
+    --white:     #FDFCFA;
+    --r: 0.75rem;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(247,246,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--surface-3);
+    padding: 0 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+  }
+  .nav-brand span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    text-decoration: none; color: var(--ink-mid);
+    font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* LAYOUT */
+  .page { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .section { margin-bottom: 7rem; }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.05; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem; line-height: 1.2;
+    letter-spacing: -0.02em; color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 1rem;
+  }
+  p { color: var(--ink-mid); max-width: 62ch; }
+
+  /* HERO */
+  .hero {
+    padding: 6rem 0 4rem;
+    border-bottom: 1px solid var(--surface-3);
+    margin-bottom: 7rem;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 { margin-bottom: 1.5rem; }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--ink-mid);
+    max-width: 55ch; line-height: 1.6; margin-bottom: 2rem;
+  }
+  .hero-pills { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 0.35rem 0.85rem;
+    background: var(--surface-2);
+    border: 1px solid var(--surface-3);
+    border-radius: 999px;
+    font-size: 0.78rem; font-weight: 500; color: var(--ink-mid);
+  }
+
+  /* BENCHMARK */
+  .benchmark-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px;
+    background: var(--surface-3); border: 1px solid var(--surface-3);
+    border-radius: var(--r); overflow: hidden; margin-top: 2rem;
+  }
+  .benchmark-card {
+    background: var(--white); padding: 2rem;
+  }
+  .benchmark-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem; margin-bottom: 0.25rem;
+  }
+  .benchmark-tag {
+    font-size: 0.72rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-soft); margin-bottom: 1rem;
+  }
+  .benchmark-card p { font-size: 0.88rem; margin-bottom: 1rem; }
+  .benchmark-takes { margin-top: 1rem; }
+  .benchmark-take {
+    display: flex; gap: 0.5rem;
+    font-size: 0.82rem; color: var(--ink-mid);
+    margin-bottom: 0.4rem;
+  }
+  .take-icon { color: var(--accent-2); flex-shrink: 0; }
+  .take-icon.no { color: var(--accent); }
+
+  /* DESIGN PRINCIPLES */
+  .principles-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--surface-3); border: 1px solid var(--surface-3);
+    border-radius: var(--r); overflow: hidden; margin-top: 2rem;
+  }
+  .principle-card {
+    background: var(--white); padding: 2.5rem;
+  }
+  .principle-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.1em;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .principle-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem; text-transform: none; letter-spacing: -0.01em;
+    font-weight: 400; color: var(--ink); margin-bottom: 0.75rem;
+  }
+  .principle-card p { font-size: 0.9rem; }
+
+  /* COLOR */
+  .color-section { margin-top: 2rem; }
+  .color-group { margin-bottom: 2.5rem; }
+  .color-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.75rem; }
+  .color-chip {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+    width: 140px;
+  }
+  .color-swatch { height: 80px; }
+  .color-meta { padding: 0.6rem 0.75rem; background: var(--white); }
+  .color-name {
+    font-size: 0.78rem; font-weight: 600; color: var(--ink);
+    display: block; margin-bottom: 0.1rem;
+  }
+  .color-hex {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; color: var(--ink-soft);
+  }
+  .color-use {
+    font-size: 0.68rem; color: var(--ink-soft);
+    margin-top: 0.15rem;
+  }
+
+  /* TYPOGRAPHY */
+  .type-specimen { margin-top: 2rem; }
+  .type-row {
+    display: grid; grid-template-columns: 140px 1fr;
+    gap: 2rem; align-items: baseline;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--surface-3);
+  }
+  .type-meta { }
+  .type-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    display: block; margin-bottom: 0.25rem;
+  }
+  .type-spec {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; color: var(--accent);
+  }
+
+  /* SPACING */
+  .spacing-row { display: flex; gap: 1rem; align-items: flex-end; margin-top: 1.5rem; flex-wrap: wrap; }
+  .spacing-item { text-align: center; }
+  .spacing-bar { background: var(--accent); width: 20px; margin: 0 auto 0.35rem; border-radius: 2px; }
+  .spacing-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--ink-soft);
+    display: block;
+  }
+
+  /* SCREENS */
+  .screens-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 2rem; margin-top: 2.5rem;
+  }
+  .screen-card {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--surface-3);
+    background: var(--white);
+  }
+  .screen-header {
+    padding: 0.6rem 0.9rem;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--surface-3);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .screen-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .screen-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--ink-soft);
+    margin-left: auto;
+  }
+  .screen-body { padding: 1.5rem; min-height: 280px; }
+  .screen-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    padding: 0.35rem 0.6rem; margin-top: 0.75rem;
+    display: block;
+  }
+  .screen-desc { font-size: 0.83rem; color: var(--ink-mid); padding: 0 1.5rem 1.25rem; }
+
+  /* MOCKUP ELEMENTS */
+  .mock-input {
+    border: 1.5px solid var(--surface-3);
+    border-radius: 10px; padding: 1rem 1.25rem;
+    font-size: 0.9rem; color: var(--ink-soft);
+    margin-bottom: 0.75rem; background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .mock-input.active {
+    border-color: var(--ink);
+    color: var(--ink); background: var(--white);
+  }
+  .mock-btn {
+    display: inline-block; padding: 0.75rem 1.5rem;
+    background: var(--ink); color: var(--white);
+    border-radius: 8px; font-size: 0.85rem;
+    font-weight: 500; font-family: 'DM Sans', sans-serif;
+  }
+  .mock-btn.secondary {
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--surface-3);
+  }
+  .mock-q {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem; line-height: 1.4;
+    color: var(--ink); margin-bottom: 1rem;
+  }
+  .mock-chat-system {
+    background: var(--surface-2);
+    border-radius: 12px 12px 12px 4px;
+    padding: 0.85rem 1rem; margin-bottom: 0.5rem;
+    font-size: 0.88rem; color: var(--ink); max-width: 85%;
+  }
+  .mock-chat-user {
+    background: var(--ink);
+    border-radius: 12px 12px 4px 12px;
+    padding: 0.85rem 1rem; margin-bottom: 0.5rem;
+    font-size: 0.88rem; color: var(--white);
+    max-width: 85%; margin-left: auto;
+  }
+  .mock-chunk {
+    border-left: 3px solid var(--accent);
+    padding: 0.85rem 1rem; margin-bottom: 0.75rem;
+    background: var(--surface);
+    border-radius: 0 8px 8px 0;
+  }
+  .mock-chunk-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+  .mock-chunk-text { font-size: 0.85rem; color: var(--ink-mid); }
+  .mock-result-yes {
+    border: 1.5px solid var(--accent-2);
+    border-radius: 10px; padding: 1rem;
+    background: #F0F9F6;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+  .mock-result-icon { font-size: 1.2rem; margin-top: 0.1rem; }
+  .mock-result-text { font-size: 0.85rem; color: var(--ink); }
+  .mock-result-sub { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.25rem; }
+  .mock-loading {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 3rem 1rem; text-align: center;
+  }
+  .mock-spinner {
+    width: 36px; height: 36px;
+    border: 2px solid var(--surface-3);
+    border-top-color: var(--ink);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .mock-loading-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem; color: var(--ink-mid);
+  }
+  .mock-loading-sub {
+    font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.25rem;
+  }
+  .mock-dots { display: flex; gap: 0.3rem; margin-top: 1rem; }
+  .mock-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--surface-3);
+  }
+  .mock-dot.active { background: var(--accent); }
+
+  /* COMPONENT SYSTEM */
+  .components-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 2rem;
+  }
+  .comp-card {
+    background: var(--white); border: 1px solid var(--surface-3);
+    border-radius: var(--r); padding: 1.5rem;
+  }
+  .comp-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    margin-bottom: 0.75rem;
+  }
+  .comp-desc { font-size: 0.82rem; color: var(--ink-mid); margin-top: 0.75rem; }
+
+  /* FIGMA GUIDE */
+  .figma-steps {
+    counter-reset: step; margin-top: 2rem;
+  }
+  .figma-step {
+    display: grid; grid-template-columns: 48px 1fr;
+    gap: 1.5rem; margin-bottom: 2.5rem;
+    align-items: start;
+  }
+  .figma-step-num {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--ink); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .figma-step-content h3 {
+    text-transform: none; letter-spacing: 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--ink); margin-bottom: 0.4rem;
+  }
+  .figma-step-content p { font-size: 0.88rem; color: var(--ink-mid); margin-bottom: 0.5rem; }
+  .code-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; padding: 0.2rem 0.5rem;
+    background: var(--surface-2); border: 1px solid var(--surface-3);
+    border-radius: 4px; color: var(--ink-mid); margin: 0.2rem 0.2rem 0 0;
+  }
+
+  /* MOTION */
+  .motion-table {
+    width: 100%; border-collapse: collapse;
+    margin-top: 1.5rem; font-size: 0.85rem;
+  }
+  .motion-table th {
+    text-align: left; padding: 0.75rem 1rem;
+    background: var(--surface-2);
+    font-size: 0.72rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .motion-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--surface-2);
+    color: var(--ink-mid);
+    vertical-align: top;
+  }
+  .motion-table td:first-child {
+    font-weight: 500; color: var(--ink);
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+  }
+  .motion-table tr:last-child td { border-bottom: none; }
+
+  /* DO/DONT */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+  .do-card, .dont-card {
+    border-radius: var(--r); padding: 1.5rem;
+    border: 1px solid;
+  }
+  .do-card { border-color: #A8D5C4; background: #F5FBF8; }
+  .dont-card { border-color: #F0C0B0; background: #FDF5F2; }
+  .do-head, .dont-head {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .do-head { color: var(--accent-2); }
+  .dont-head { color: var(--accent); }
+  .do-card li, .dont-card li {
+    font-size: 0.85rem; color: var(--ink-mid);
+    margin-bottom: 0.5rem; margin-left: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--surface-3);
+    padding: 3rem 0; text-align: center;
+    color: var(--ink-soft); font-size: 0.82rem;
+  }
+  footer strong {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem; color: var(--ink); display: block; margin-bottom: 0.25rem;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .page { padding: 3rem 1.25rem; }
+    .benchmark-grid, .principles-grid, .screens-grid, .components-grid { grid-template-columns: 1fr; }
+    .do-dont { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Rosetta <span>◆</span> Design</div>
+  <div class="nav-links">
+    <a href="#benchmark">Benchmark</a>
+    <a href="#principles">Principles</a>
+    <a href="#tokens">Tokens</a>
+    <a href="#screens">Screens</a>
+    <a href="#figma">Figma Guide</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">Design System v1.0 — Phase 1</p>
+    <h1>The interface<br>that gets out<br>of the way.</h1>
+    <p class="hero-sub">Rosetta's visual language is built around a single truth: the magic is in the explanation, not the chrome. Every design decision reduces friction between the user and their "click" moment.</p>
+    <div class="hero-pills">
+      <span class="pill">Figma-ready</span>
+      <span class="pill">Web + Mobile</span>
+      <span class="pill">Dark mode ready</span>
+      <span class="pill">WCAG 2.1 AA</span>
+    </div>
+  </div>
+
+  <!-- BENCHMARK -->
+  <div class="section" id="benchmark">
+    <p class="section-label">01 — Research</p>
+    <h2>What we studied.<br>What we took. What we rejected.</h2>
+    <p>Six products represent the best-in-class UI thinking for different aspects of Rosetta. This is what we learned from each.</p>
+
+    <div class="benchmark-grid">
+      <div class="benchmark-card">
+        <div class="benchmark-name">Linear</div>
+        <div class="benchmark-tag">Project tool · linear.app</div>
+        <p>The gold standard for "functional beauty." Dark-mode-first, razor-sharp typography, zero wasted pixels. Every element earns its place.</p>
+        <div class="benchmark-takes">
+          <div class="benchmark-take"><span class="take-icon">✓</span> LCH color space for perceptually even tones</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Dense-but-clear information hierarchy</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Keyboard-first, then mouse — every action is fast</div>
+          <div class="benchmark-take"><span class="take-icon no">✗</span> Too task-heavy for a conversational learning flow</div>
+        </div>
+      </div>
+      <div class="benchmark-card">
+        <div class="benchmark-name">Perplexity</div>
+        <div class="benchmark-tag">AI search · perplexity.ai</div>
+        <p>Proved that an AI interface can feel like a search box. One job, done with clarity. The head of design said: "It's a simple design problem — sources and an answer."</p>
+        <div class="benchmark-takes">
+          <div class="benchmark-take"><span class="take-icon">✓</span> Single-focused input as the entire home screen</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> No navigation clutter on first use</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Sources surfaced immediately for trust</div>
+          <div class="benchmark-take"><span class="take-icon no">✗</span> Lacks warmth — too clinical for learning</div>
+        </div>
+      </div>
+      <div class="benchmark-card">
+        <div class="benchmark-name">Duolingo</div>
+        <div class="benchmark-tag">Learning · duolingo.com</div>
+        <p>Deferred account creation — users learn before they sign up. The product proves its value before asking for commitment. A masterclass in onboarding psychology.</p>
+        <div class="benchmark-takes">
+          <div class="benchmark-take"><span class="take-icon">✓</span> Value before commitment — no sign-up wall</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Progress indicators as motivation, not progress</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Mobile-first, thumb-zone aware</div>
+          <div class="benchmark-take"><span class="take-icon no">✗</span> Gamification distracts from depth of understanding</div>
+        </div>
+      </div>
+      <div class="benchmark-card">
+        <div class="benchmark-name">Cleo</div>
+        <div class="benchmark-tag">Finance app · meetcleo.com</div>
+        <p>Conversational onboarding done right. Casual, relatable questions that feel like talking to a friend, not filling out a form. Personality and warmth baked into the UX.</p>
+        <div class="benchmark-takes">
+          <div class="benchmark-take"><span class="take-icon">✓</span> Questions feel like dialogue, not data collection</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> One question at a time — never a form</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Typing indicators make the AI feel alive</div>
+          <div class="benchmark-take"><span class="take-icon no">✗</span> Too playful — Rosetta needs intellectual gravitas</div>
+        </div>
+      </div>
+      <div class="benchmark-card">
+        <div class="benchmark-name">Notion</div>
+        <div class="benchmark-tag">Productivity · notion.so</div>
+        <p>The best example of progressive disclosure — complexity hidden until needed. Users feel powerful without being overwhelmed. Minimal chrome, maximum content.</p>
+        <div class="benchmark-takes">
+          <div class="benchmark-take"><span class="take-icon">✓</span> Generous whitespace creates focus</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Typography as the primary design element</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Context-sensitive UI — nothing shown before needed</div>
+          <div class="benchmark-take"><span class="take-icon no">✗</span> Too open-ended — Rosetta needs more guidance</div>
+        </div>
+      </div>
+      <div class="benchmark-card">
+        <div class="benchmark-name">Slack</div>
+        <div class="benchmark-tag">Messaging · slack.com</div>
+        <p>Onboarding uses the product's own core mechanic — messaging — to teach itself. The empty state is a first message. This is our model for how the explanation should feel like a conversation.</p>
+        <div class="benchmark-takes">
+          <div class="benchmark-take"><span class="take-icon">✓</span> Uses the product metaphor for onboarding</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> "Tada!" — emotional welcome that signals personality</div>
+          <div class="benchmark-take"><span class="take-icon">✓</span> Sequential reveal — one thing at a time</div>
+          <div class="benchmark-take"><span class="take-icon no">✗</span> Complex navigation patterns don't apply here</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN PRINCIPLES -->
+  <div class="section" id="principles">
+    <p class="section-label">02 — Principles</p>
+    <h2>Six rules that<br>govern every decision.</h2>
+    <p>Before opening Figma, these principles must be internalized. Every pixel is accountable to them.</p>
+
+    <div class="principles-grid">
+      <div class="principle-card">
+        <div class="principle-num">01</div>
+        <h3>One thing at a time</h3>
+        <p>Each screen has exactly one primary action. No competing calls to action. The user should never wonder what to do next — the answer should be visually obvious. Working memory has 4 slots. Don't fill them with UI.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">02</div>
+        <h3>The explanation is the hero</h3>
+        <p>Chrome is a supporting cast. Navigation, branding, and chrome should recede. When the explanation appears, nothing should compete with it visually. The interface becomes almost invisible during the learning moment.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">03</div>
+        <h3>Warmth through typography, not decoration</h3>
+        <p>No illustrations. No stock photos. No decorative icons. Personality comes from typeface choice, weight, and rhythm. The serif display font carries the warmth. The monospace carries precision. Together they signal: intelligent and human.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">04</div>
+        <h3>Sequential revelation</h3>
+        <p>Explanation chunks appear one at a time, not all at once. The interface controls pacing deliberately — not as a gimmick, but because dumping all three chunks simultaneously recreates the cognitive overload we're trying to solve.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">05</div>
+        <h3>Loading is a feature</h3>
+        <p>The 3-5 second generation wait is not a problem to hide — it's a trust-builder. "Building your explanation..." signals that something real is being constructed for you specifically, not retrieved from a shelf. Never use a generic spinner alone.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">06</div>
+        <h3>Mobile-first, touch-first</h3>
+        <p>Design at 390px width first. Every interactive element must be at minimum 44×44px touch target. Primary actions sit in the bottom 40% of screen (thumb zone). Desktop is an enhancement, not the primary canvas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN TOKENS -->
+  <div class="section" id="tokens">
+    <p class="section-label">03 — Design Tokens</p>
+    <h2>The visual vocabulary.<br>Copy these into Figma exactly.</h2>
+
+    <!-- Colors -->
+    <div class="color-section">
+      <h3>Color Palette</h3>
+
+      <div class="color-group">
+        <p style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:0.5rem;">Primary — Ink</p>
+        <div class="color-row">
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#0D0D0F;"></div>
+            <div class="color-meta">
+              <span class="color-name">Ink / 100</span>
+              <span class="color-hex">#0D0D0F</span>
+              <span class="color-use">Headlines, body text</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#3A3A45;"></div>
+            <div class="color-meta">
+              <span class="color-name">Ink / 60</span>
+              <span class="color-hex">#3A3A45</span>
+              <span class="color-use">Body paragraphs</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#8888A0;"></div>
+            <div class="color-meta">
+              <span class="color-name">Ink / 30</span>
+              <span class="color-hex">#8888A0</span>
+              <span class="color-use">Labels, metadata</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#C5C4D2;"></div>
+            <div class="color-meta">
+              <span class="color-name">Ink / 10</span>
+              <span class="color-hex">#C5C4D2</span>
+              <span class="color-use">Borders, dividers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <p style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:0.5rem;">Surface — Warm Neutral</p>
+        <div class="color-row">
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#FDFCFA;border:1px solid #E3E0D8;"></div>
+            <div class="color-meta">
+              <span class="color-name">Surface / White</span>
+              <span class="color-hex">#FDFCFA</span>
+              <span class="color-use">Cards, inputs</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#F7F6F2;"></div>
+            <div class="color-meta">
+              <span class="color-name">Surface / 100</span>
+              <span class="color-hex">#F7F6F2</span>
+              <span class="color-use">Page background</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#EFEDE8;"></div>
+            <div class="color-meta">
+              <span class="color-name">Surface / 200</span>
+              <span class="color-hex">#EFEDE8</span>
+              <span class="color-use">System bubbles</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#E3E0D8;"></div>
+            <div class="color-meta">
+              <span class="color-name">Surface / 300</span>
+              <span class="color-hex">#E3E0D8</span>
+              <span class="color-use">Borders, lines</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <p style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:0.5rem;">Accent — Purposeful, Restrained</p>
+        <div class="color-row">
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#C84B2F;"></div>
+            <div class="color-meta">
+              <span class="color-name">Terracotta</span>
+              <span class="color-hex">#C84B2F</span>
+              <span class="color-use">Chunk markers, CTAs</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#1A6B5C;"></div>
+            <div class="color-meta">
+              <span class="color-name">Forest</span>
+              <span class="color-hex">#1A6B5C</span>
+              <span class="color-use">Success, "clicked"</span>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#C9A84C;"></div>
+            <div class="color-meta">
+              <span class="color-name">Amber</span>
+              <span class="color-hex">#C9A84C</span>
+              <span class="color-use">In-progress, partial</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="type-specimen" style="margin-top:3rem;">
+      <h3>Typography System</h3>
+      <p style="font-size:0.85rem;margin-bottom:1.5rem;">Three fonts. Each has a job. Never mix their roles.</p>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-label">Display</span>
+          <span class="type-spec">DM Serif Display<br>Regular / Italic</span>
+        </div>
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:2.2rem;letter-spacing:-0.02em;color:var(--ink);line-height:1.1;">The moment<br>it clicks.</div>
+          <p style="font-size:0.75rem;color:var(--ink-soft);margin-top:0.5rem;">Use for: page headlines, section headers, the concept name displayed back to user, the "click" confirmation message</p>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-label">Body</span>
+          <span class="type-spec">DM Sans<br>300, 400, 500, 600</span>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--ink-mid);line-height:1.7;max-width:50ch;">Explanation chunks, conversational questions, labels, button text, body copy of any kind. Readable at small sizes. Never use bold heavier than 600.</div>
+          <p style="font-size:0.75rem;color:var(--ink-soft);margin-top:0.5rem;">Use for: everything that needs to be read quickly and clearly</p>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-label">Code / Meta</span>
+          <span class="type-spec">DM Mono<br>400, 500</span>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--ink-soft);letter-spacing:0.05em;">STEP 01 / 05 &nbsp;&nbsp; CONCEPT CAPTURED &nbsp;&nbsp; SESSION_ID: a4f2...</div>
+          <p style="font-size:0.75rem;color:var(--ink-soft);margin-top:0.5rem;">Use for: step counters, system labels, section tags, IDs, metadata — never for body text</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacing -->
+    <div style="margin-top:3rem;">
+      <h3>Spacing Scale — 4px Base</h3>
+      <p style="font-size:0.85rem;margin-bottom:0.5rem;">All spacing values are multiples of 4px. No exceptions.</p>
+      <div class="spacing-row">
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:4px;"></div>
+          <span class="spacing-label">4px<br>xs</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:8px;"></div>
+          <span class="spacing-label">8px<br>sm</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:12px;"></div>
+          <span class="spacing-label">12px<br>—</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:16px;"></div>
+          <span class="spacing-label">16px<br>md</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:24px;"></div>
+          <span class="spacing-label">24px<br>lg</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:32px;"></div>
+          <span class="spacing-label">32px<br>xl</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:48px;"></div>
+          <span class="spacing-label">48px<br>2xl</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:64px;"></div>
+          <span class="spacing-label">64px<br>3xl</span>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="height:96px;"></div>
+          <span class="spacing-label">96px<br>4xl</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Border Radius -->
+    <div style="margin-top:3rem;">
+      <h3>Border Radius</h3>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1rem;">
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;background:var(--ink);border-radius:4px;margin:0 auto 0.5rem;"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink-soft);">4px<br>inputs</span>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;background:var(--ink);border-radius:8px;margin:0 auto 0.5rem;"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink-soft);">8px<br>buttons</span>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;background:var(--ink);border-radius:12px;margin:0 auto 0.5rem;"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink-soft);">12px<br>chat bubbles</span>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;background:var(--ink);border-radius:16px;margin:0 auto 0.5rem;"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink-soft);">16px<br>cards</span>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;background:var(--ink);border-radius:999px;margin:0 auto 0.5rem;"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink-soft);">999px<br>pills/tags</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div class="section" id="screens">
+    <p class="section-label">04 — Screen Designs</p>
+    <h2>Seven states.<br>One session. No navigation.</h2>
+    <p>Each screen below is a Figma frame to build. They are sequential — a user flows top-left to bottom-right through one session.</p>
+
+    <div class="screens-grid">
+
+      <!-- Screen 1: Concept Input -->
+      <div>
+        <div class="screen-card">
+          <div class="screen-header">
+            <div class="screen-dot" style="background:#FF5F56;"></div>
+            <div class="screen-dot" style="background:#FFBD2E;"></div>
+            <div class="screen-dot" style="background:#27C93F;"></div>
+            <span class="screen-title">01 — CONCEPT INPUT</span>
+          </div>
+          <div class="screen-body" style="display:flex;flex-direction:column;justify-content:center;padding:2rem;">
+            <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.1em;margin-bottom:1.5rem;">ROSETTA</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.2;color:var(--ink);margin-bottom:0.5rem;">What's been<br>hard to understand?</div>
+            <div style="font-size:0.8rem;color:var(--ink-soft);margin-bottom:1.75rem;">Any concept, any domain. We'll find the right angle for you.</div>
+            <div class="mock-input active">Type a concept you're stuck on...</div>
+            <div style="display:flex;justify-content:flex-end;">
+              <div class="mock-btn">Continue →</div>
+            </div>
+          </div>
+        </div>
+        <span class="screen-label">01 / Concept Input</span>
+        <p class="screen-desc">Full-screen. No navigation bar. Logo is tiny, top-left. Single input, centered vertically. Button disabled until text is entered. No sign-up prompt yet.</p>
+      </div>
+
+      <!-- Screen 2: Fingerprint Chat -->
+      <div>
+        <div class="screen-card">
+          <div class="screen-header">
+            <div class="screen-dot" style="background:#FF5F56;"></div>
+            <div class="screen-dot" style="background:#FFBD2E;"></div>
+            <div class="screen-dot" style="background:#27C93F;"></div>
+            <span class="screen-title">02 — FINGERPRINT CHAT</span>
+          </div>
+          <div class="screen-body" style="padding:1.25rem;">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+              <div class="mock-dots"><div class="mock-dot active"></div><div class="mock-dot active"></div><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+              <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--ink-soft);">STEP 2 OF 5</span>
+            </div>
+            <div class="mock-chat-system">Before I explain anything — what are you genuinely good at? Could be a hobby, a job, a sport. Anything you understand deeply.</div>
+            <div style="height:0.5rem;"></div>
+            <div class="mock-chat-user">I play guitar and I coach football on weekends</div>
+            <div style="height:0.5rem;"></div>
+            <div class="mock-chat-system" style="display:flex;gap:0.4rem;align-items:center;">
+              <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ink-soft);animation:pulse 1s infinite;"></span>
+              <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ink-soft);animation:pulse 1s infinite 0.2s;"></span>
+              <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ink-soft);animation:pulse 1s infinite 0.4s;"></span>
+            </div>
+            <div style="position:absolute;bottom:1.25rem;left:1.25rem;right:1.25rem;">
+              <div class="mock-input" style="margin-bottom:0;">Reply to Rosetta...</div>
+            </div>
+          </div>
+        </div>
+        <span class="screen-label">02 / Fingerprint Chat</span>
+        <p class="screen-desc">Conversation view. Messages appear top-down. Typing indicator shows the system is "thinking." Input stays at bottom. Progress dots at top. Never shows more than one question at a time.</p>
+      </div>
+
+      <!-- Screen 3: State Capture -->
+      <div>
+        <div class="screen-card">
+          <div class="screen-header">
+            <div class="screen-dot" style="background:#FF5F56;"></div>
+            <div class="screen-dot" style="background:#FFBD2E;"></div>
+            <div class="screen-dot" style="background:#27C93F;"></div>
+            <span class="screen-title">03 — STATE CAPTURE</span>
+          </div>
+          <div class="screen-body" style="padding:1.5rem;">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;">
+              <div class="mock-dots"><div class="mock-dot active"></div><div class="mock-dot active"></div><div class="mock-dot active"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+              <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--ink-soft);">STEP 3 OF 5</span>
+            </div>
+            <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--ink);margin-bottom:1.25rem;">Two quick questions before we build your explanation.</div>
+            <div style="font-size:0.82rem;color:var(--ink-mid);margin-bottom:0.5rem;font-weight:500;">How frustrated are you with this concept?</div>
+            <div style="display:flex;gap:0.4rem;margin-bottom:1.25rem;">
+              <div style="flex:1;height:36px;border:1.5px solid var(--surface-3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--ink-soft);">A little</div>
+              <div style="flex:1;height:36px;border:1.5px solid var(--surface-3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--ink-soft);">Somewhat</div>
+              <div style="flex:1;height:36px;border:1.5px solid var(--ink);background:var(--ink);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--white);">Very</div>
+            </div>
+            <div style="font-size:0.82rem;color:var(--ink-mid);margin-bottom:0.5rem;font-weight:500;">How urgent is this for you right now?</div>
+            <div style="display:flex;gap:0.4rem;margin-bottom:1.5rem;">
+              <div style="flex:1;height:36px;border:1.5px solid var(--surface-3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--ink-soft);">Exploring</div>
+              <div style="flex:1;height:36px;border:1.5px solid var(--accent);background:#FDF0EC;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--accent);">Need it soon</div>
+              <div style="flex:1;height:36px;border:1.5px solid var(--surface-3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--ink-soft);">Right now</div>
+            </div>
+            <div class="mock-btn" style="width:100%;text-align:center;">Build my explanation →</div>
+          </div>
+        </div>
+        <span class="screen-label">03 / State Capture</span>
+        <p class="screen-desc">Segmented button selectors — not sliders. Sliders create friction on mobile. 3-option buttons are one tap. Selected state uses color, not just border. Clear final CTA.</p>
+      </div>
+
+      <!-- Screen 4: Loading -->
+      <div>
+        <div class="screen-card">
+          <div class="screen-header">
+            <div class="screen-dot" style="background:#FF5F56;"></div>
+            <div class="screen-dot" style="background:#FFBD2E;"></div>
+            <div class="screen-dot" style="background:#27C93F;"></div>
+            <span class="screen-title">04 — LOADING STATE</span>
+          </div>
+          <div class="screen-body" style="display:flex;align-items:center;justify-content:center;">
+            <div class="mock-loading">
+              <div class="mock-spinner"></div>
+              <div class="mock-loading-text">Building your explanation...</div>
+              <div class="mock-loading-sub">Finding the right angle for how your mind works.</div>
+              <div style="margin-top:1.5rem;padding:0.75rem 1rem;background:var(--surface-2);border-radius:8px;font-size:0.78rem;color:var(--ink-soft);max-width:220px;text-align:center;">
+                Matched your guitar knowledge to<br><strong style="color:var(--ink);">gradient descent</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="screen-label">04 / Loading State</span>
+        <p class="screen-desc">Never a bare spinner. Always a human message. Show the matched subsumer mid-load — it builds anticipation and trust. 3–5 second target. The wait signals "bespoke."</p>
+      </div>
+
+      <!-- Screen 5: Explanation -->
+      <div>
+        <div class="screen-card">
+          <div class="screen-header">
+            <div class="screen-dot" style="background:#FF5F56;"></div>
+            <div class="screen-dot" style="background:#FFBD2E;"></div>
+            <div class="screen-dot" style="background:#27C93F;"></div>
+            <span class="screen-title">05 — EXPLANATION</span>
+          </div>
+          <div class="screen-body" style="padding:1.25rem;">
+            <div style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--ink-soft);margin-bottom:0.75rem;">GRADIENT DESCENT — via guitar intuition</div>
+            <div class="mock-chunk">
+              <div class="mock-chunk-num">Chunk 1 of 3</div>
+              <div class="mock-chunk-text">Picture tuning a guitar by ear. You're adjusting the tension on a string, listening after each turn to see if you're getting warmer or colder...</div>
+            </div>
+            <div class="mock-chunk" style="opacity:0.5;">
+              <div class="mock-chunk-num">Chunk 2 of 3 — revealing in 4s</div>
+              <div class="mock-chunk-text">Each tiny turn is like a "step" in gradient descent...</div>
+            </div>
+            <div style="font-size:0.75rem;color:var(--ink-soft);text-align:center;margin-top:0.5rem;">Scroll to reveal at your own pace</div>
+          </div>
+        </div>
+        <span class="screen-label">05 / Explanation</span>
+        <p class="screen-desc">Chunk 1 appears first. Chunks 2 and 3 are visible but dimmed — they reveal progressively, either on timer or scroll. The accent left-border is the key visual signal of "this is the explanation." Final chunk always ends with the real concept restated.</p>
+      </div>
+
+      <!-- Screen 6: Transfer Test -->
+      <div>
+        <div class="screen-card">
+          <div class="screen-header">
+            <div class="screen-dot" style="background:#FF5F56;"></div>
+            <div class="screen-dot" style="background:#FFBD2E;"></div>
+            <div class="screen-dot" style="background:#27C93F;"></div>
+            <span class="screen-title">06 — TRANSFER TEST</span>
+          </div>
+          <div class="screen-body" style="padding:1.5rem;">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+              <div class="mock-dots"><div class="mock-dot active"></div><div class="mock-dot active"></div><div class="mock-dot active"></div><div class="mock-dot active"></div><div class="mock-dot"></div></div>
+              <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--ink-soft);">STEP 4 OF 5</span>
+            </div>
+            <div style="font-family:'DM Serif Display',serif;font-size:1rem;color:var(--ink);margin-bottom:0.75rem;line-height:1.4;">A chef is developing a new recipe but keeps slightly over-salting it. She adds tiny amounts of salt, tastes, then adjusts again and again until perfect.</div>
+            <div style="font-size:0.82rem;font-weight:500;color:var(--ink);margin-bottom:0.75rem;">How does this connect to what you just learned?</div>
+            <div class="mock-input active" style="min-height:80px;display:flex;align-items:flex-start;padding:0.85rem 1rem;">Write your answer here...</div>
+            <div style="display:flex;justify-content:flex-end;margin-top:0.75rem;">
+              <div class="mock-btn">Submit answer →</div>
+            </div>
+          </div>
+        </div>
+        <span class="screen-label">06 / Transfer Test</span>
+        <p class="screen-desc">Novel scenario in a third domain (not guitar, not ML). Free-text response — no word limit shown, no pressure. The question is conversational, not clinical. No "right answer" language.</p>
+      </div>
+
+      <!-- Screen 7: Result -->
+      <div style="grid-column: 1 / -1; max-width: 540px; margin: 0 auto;">
+        <div class="screen-card">
+          <div class="screen-header">
+            <div class="screen-dot" style="background:#FF5F56;"></div>
+            <div class="screen-dot" style="background:#FFBD2E;"></div>
+            <div class="screen-dot" style="background:#27C93F;"></div>
+            <span class="screen-title">07 — RESULT (CLICKED)</span>
+          </div>
+          <div class="screen-body" style="padding:1.75rem;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;">
+            <div style="font-size:2rem;margin-bottom:0.75rem;">✦</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:1.8rem;line-height:1.2;color:var(--ink);margin-bottom:0.5rem;">Gradient descent<br>just clicked.</div>
+            <div style="font-size:0.85rem;color:var(--ink-soft);margin-bottom:1.5rem;max-width:30ch;">You understood how it applies to a chef's seasoning — that's the real thing, not just the analogy.</div>
+            <div class="mock-result-yes" style="text-align:left;width:100%;">
+              <div class="mock-result-icon">✓</div>
+              <div>
+                <div class="mock-result-text">Your answer: integrated</div>
+                <div class="mock-result-sub">You connected the core principle to a new context. That's genuine understanding.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:0.75rem;margin-top:0.75rem;width:100%;">
+              <div class="mock-btn" style="flex:1;text-align:center;background:var(--accent-2);">Explore another concept</div>
+              <div class="mock-btn secondary" style="flex:1;text-align:center;">Save this session</div>
+            </div>
+          </div>
+        </div>
+        <span class="screen-label">07 / Result — Clicked State</span>
+        <p class="screen-desc" style="max-width:100%;">The "✦" is the Rosetta star — the product's single decorative mark. Reserve it for the success moment only. This is where the brand is felt. Headline uses the actual concept name. Score shown honestly. Two CTAs: continue learning or save (seeds Phase 2 sign-up).</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MOTION -->
+  <div class="section">
+    <p class="section-label">05 — Motion Design</p>
+    <h2>Where things move.<br>And why.</h2>
+
+    <table class="motion-table">
+      <thead>
+        <tr>
+          <th>Interaction</th>
+          <th>Animation</th>
+          <th>Duration</th>
+          <th>Easing</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Screen transition</td>
+          <td>Fade + slide up 16px</td>
+          <td>280ms</td>
+          <td>ease-out</td>
+          <td>Forward momentum, not jarring</td>
+        </tr>
+        <tr>
+          <td>Chat bubble appear</td>
+          <td>Fade in + slide up 8px</td>
+          <td>200ms</td>
+          <td>ease-out</td>
+          <td>Natural message arrival</td>
+        </tr>
+        <tr>
+          <td>Typing indicator</td>
+          <td>3-dot pulse, staggered 200ms</td>
+          <td>∞ loop</td>
+          <td>ease-in-out</td>
+          <td>Signals system is alive and working</td>
+        </tr>
+        <tr>
+          <td>Chunk reveal</td>
+          <td>Fade in + left-border grows from 0</td>
+          <td>400ms</td>
+          <td>ease-out</td>
+          <td>Draws attention to new content</td>
+        </tr>
+        <tr>
+          <td>Loading spinner</td>
+          <td>Single ring rotation</td>
+          <td>1000ms</td>
+          <td>linear</td>
+          <td>Consistent, calm, not frantic</td>
+        </tr>
+        <tr>
+          <td>Subsumer reveal (loading)</td>
+          <td>Fade in after 1.5s delay</td>
+          <td>300ms</td>
+          <td>ease-in</td>
+          <td>Builds anticipation mid-load</td>
+        </tr>
+        <tr>
+          <td>Success ✦ icon</td>
+          <td>Scale from 0.5 → 1.0 + rotate 30°</td>
+          <td>500ms</td>
+          <td>spring (tension 200)</td>
+          <td>The only "celebratory" motion — earns it</td>
+        </tr>
+        <tr>
+          <td>Button hover</td>
+          <td>Background 8% darker</td>
+          <td>120ms</td>
+          <td>linear</td>
+          <td>Immediate feedback, no distraction</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DO/DONT -->
+  <div class="section">
+    <p class="section-label">06 — Rules</p>
+    <h2>Do this.<br>Never that.</h2>
+
+    <div class="do-dont">
+      <div class="do-card">
+        <div class="do-head">✓ Always</div>
+        <ul>
+          <li>One primary action per screen</li>
+          <li>Progress dots, not percentage bars</li>
+          <li>DM Serif for emotional moments (the click, the headline)</li>
+          <li>Left-border accent on explanation chunks</li>
+          <li>Bottom-anchored input on mobile</li>
+          <li>Show subsumer name during loading</li>
+          <li>44px minimum touch targets</li>
+          <li>Use the ✦ sparingly — only on success</li>
+          <li>Warm neutral backgrounds (#F7F6F2), never pure white</li>
+          <li>Surface the "not clicked" state with kindness, not failure language</li>
+        </ul>
+      </div>
+      <div class="dont-card">
+        <div class="dont-head">✗ Never</div>
+        <ul>
+          <li>Navigation bar on learning screens</li>
+          <li>Show all explanation chunks at once</li>
+          <li>Use sliders for state capture — use segmented buttons</li>
+          <li>Generic spinner without context text</li>
+          <li>Use Inter, Roboto, or system fonts</li>
+          <li>Purple gradients (overused AI aesthetic)</li>
+          <li>Illustrations or stock imagery</li>
+          <li>More than 2 CTAs on any screen</li>
+          <li>Sign-up wall before the magic moment</li>
+          <li>Percentage-based completion bars (gamification creep)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIGMA GUIDE -->
+  <div class="section" id="figma">
+    <p class="section-label">07 — Figma Setup</p>
+    <h2>How to build this<br>in Figma, step by step.</h2>
+
+    <div class="figma-steps">
+
+      <div class="figma-step">
+        <div class="figma-step-num">1</div>
+        <div class="figma-step-content">
+          <h3>Create the file structure</h3>
+          <p>Create a new Figma file. Name it "Rosetta — Design System & Screens." Create 4 pages:</p>
+          <span class="code-tag">🎨 Design Tokens</span>
+          <span class="code-tag">🧩 Components</span>
+          <span class="code-tag">📱 Mobile Screens</span>
+          <span class="code-tag">🖥️ Desktop Screens</span>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">2</div>
+        <div class="figma-step-content">
+          <h3>Install fonts</h3>
+          <p>Before doing anything else, install all three fonts via Google Fonts or Figma's font picker. Verify they render correctly at 14px body size.</p>
+          <span class="code-tag">DM Serif Display</span>
+          <span class="code-tag">DM Sans</span>
+          <span class="code-tag">DM Mono</span>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">3</div>
+        <div class="figma-step-content">
+          <h3>Set up color styles (Design Tokens page)</h3>
+          <p>Create every color as a named Figma Style. Use the exact naming convention below — your developer will reference these names in CSS variables.</p>
+          <span class="code-tag">ink/100</span>
+          <span class="code-tag">ink/60</span>
+          <span class="code-tag">ink/30</span>
+          <span class="code-tag">ink/10</span>
+          <span class="code-tag">surface/white</span>
+          <span class="code-tag">surface/100</span>
+          <span class="code-tag">surface/200</span>
+          <span class="code-tag">surface/300</span>
+          <span class="code-tag">accent/terracotta</span>
+          <span class="code-tag">accent/forest</span>
+          <span class="code-tag">accent/amber</span>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">4</div>
+        <div class="figma-step-content">
+          <h3>Set up text styles</h3>
+          <p>Create named text styles for every typographic role. Never apply font settings directly to elements — always via style.</p>
+          <span class="code-tag">display/hero (DM Serif, 48px, -2%)</span>
+          <span class="code-tag">display/h1 (DM Serif, 36px, -2%)</span>
+          <span class="code-tag">display/h2 (DM Serif, 24px, -1%)</span>
+          <span class="code-tag">body/lg (DM Sans, 18px, 400)</span>
+          <span class="code-tag">body/md (DM Sans, 15px, 400)</span>
+          <span class="code-tag">body/sm (DM Sans, 13px, 400)</span>
+          <span class="code-tag">label/md (DM Mono, 11px, 500, +12%)</span>
+          <span class="code-tag">label/sm (DM Mono, 10px, 500, +15%)</span>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">5</div>
+        <div class="figma-step-content">
+          <h3>Build the component library (Components page)</h3>
+          <p>Build these as Figma components with all interactive states. Use Auto Layout on every component — no fixed-size elements.</p>
+          <span class="code-tag">Button/Primary</span>
+          <span class="code-tag">Button/Secondary</span>
+          <span class="code-tag">Button/Ghost</span>
+          <span class="code-tag">Input/Default</span>
+          <span class="code-tag">Input/Active</span>
+          <span class="code-tag">Input/Textarea</span>
+          <span class="code-tag">ChatBubble/System</span>
+          <span class="code-tag">ChatBubble/User</span>
+          <span class="code-tag">TypingIndicator</span>
+          <span class="code-tag">ExplanationChunk</span>
+          <span class="code-tag">ProgressDots</span>
+          <span class="code-tag">SegmentedControl/3</span>
+          <span class="code-tag">ResultCard/Success</span>
+          <span class="code-tag">ResultCard/Partial</span>
+          <span class="code-tag">ResultCard/Retry</span>
+          <span class="code-tag">LoadingState</span>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">6</div>
+        <div class="figma-step-content">
+          <h3>Build the 7 mobile screens (Mobile Screens page)</h3>
+          <p>Use iPhone 14 Pro frame (390 × 844px) for all mobile screens. Build each of the 7 session states as a separate frame. Arrange them left-to-right in order with 80px gaps. Add a flow connector (Figma prototype) between each.</p>
+          <p>For each screen, use components from step 5. Never place raw elements directly — always use component instances.</p>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">7</div>
+        <div class="figma-step-content">
+          <h3>Build the desktop screens (Desktop Screens page)</h3>
+          <p>Desktop frame: 1440px wide. Same 7 states but centered content column at max-width 640px. The session flow stays single-column — desktop is not a two-column layout. Add a subtle background texture (very low opacity noise, or a warm gradient from surface/100 → surface/200).</p>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">8</div>
+        <div class="figma-step-content">
+          <h3>Create the prototype flow</h3>
+          <p>Connect all 7 screens in sequence using Figma Prototype. Use "Smart Animate" transitions with 280ms ease-out for all screen changes. Add interaction on the Continue button, chat send action, and CTA buttons. Share the prototype link with the dev team.</p>
+        </div>
+      </div>
+
+      <div class="figma-step">
+        <div class="figma-step-num">9</div>
+        <div class="figma-step-content">
+          <h3>Export specs for developer handoff</h3>
+          <p>Use Figma's Dev Mode to annotate spacing and sizes. Make sure every component has:</p>
+          <span class="code-tag">All states documented (hover, focus, disabled)</span>
+          <span class="code-tag">Padding/spacing annotated</span>
+          <span class="code-tag">Color style named (not hex)</span>
+          <span class="code-tag">Motion spec in description field</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="page" style="padding-top:0;padding-bottom:0;">
+    <strong>Rosetta Learning Engine — Design System v1.0</strong>
+    Built to prove the magic moment. Every pixel serves the click.
+  </div>
+</footer>
+
+<style>
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+</style>
+
+</body>
+</html>
