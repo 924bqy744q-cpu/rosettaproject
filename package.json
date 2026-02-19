@@ -5,5 +5,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "postinstall": "npm run generate --workspace=@rosetta/api --if-present"
+  }
 }

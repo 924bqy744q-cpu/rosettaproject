@@ -15,9 +15,9 @@ Railway handles monorepos well. You can deploy both the API and Web services fro
 ### 2. Configure Backend Service (`apps/api`)
 Railway will likely auto-detect the repo. You need to configure it to point to the API app.
 
-- **Settings > General > Root Directory**: `apps/api`
+- **Settings > General > Root Directory**: `/` (Leave empty or set to root so it can access the `packages/shared` workspace)
 - **Settings > Build > Build Command**: `npm install`
-- **Settings > Deploy > Start Command**: `npm run start` 
+- **Settings > Deploy > Start Command**: `npm run start -w @rosetta/api` 
 - **Variables**:
     - `ANTHROPIC_API_KEY`: [Your Key]
     - `POSTHOG_API_KEY`: [Your Key]

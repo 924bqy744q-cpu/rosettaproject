@@ -1,0 +1,33 @@
+.progress-dots {
+    display: flex;
+    gap: var(--space-1);
+}
+
+.progress-dot {
+    width: 24px;
+    height: 4px;
+    /* Bars/Pills look usually better than dots for linear progress, but guide says "mock-dot" */
+    /* Guide implementation: 
+     <div class="mock-dot active"></div>
+     Assume dots or small pills. Let's make them small pills/dots.
+  */
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--surface-3);
+    transition: background-color 0.3s ease;
+}
+
+.progress-dot.active {
+    /* Using specific colors for the first 3 steps in guide? 
+     Step 1: #FF5F56 (Red)
+     Step 2: #FFBD2E (Yellow)
+     Step 3: #27C93F (Green)
+     But for generic progress, let's stick to ink/accent.
+     Wait, the guide *header* dots are Mac window controls.
+     The progress dots inside the card are:
+     <div class="mock-dots"><div class="mock-dot active"></div>...</div>
+     They look like small circles in the mockups.
+  */
+    background-color: var(--ink);
+}

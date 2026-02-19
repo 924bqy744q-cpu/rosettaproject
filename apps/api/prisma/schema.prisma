@@ -1,0 +1,61 @@
+// apps/api/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions     Session[]
+  fingerprint  Fingerprint?
+}
+
+model Fingerprint {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  
+  dominantDomains String[] // Stored as array of strings
+  strongSubsumers String[]
+  reasoningStyle  String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String?  // Optional for now (Phase 1 legacy support or partial auth)
+  user      User?    @relation(fields: [userId], references: [id])
+  
+  concept   String   // The raw concept text
+  domain    String?
+  
+  // JSON fields for rich data
+  subsumerUsed   String?
+  explanation    Json?    // Stores the ExplanationOutput object
+  transferTest   Json?    // Stores transfer test and result
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Concept {
+  id        String   @id @default(uuid())
+  raw       String   @unique
+  domain    String
+  
+  // Potential future graph edges or diverse explanations
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -5,16 +5,20 @@
     "main": "src/index.js",
     "scripts": {
         "start": "node src/index.js",
-        "dev": "nodemon src/index.js"
+        "dev": "nodemon src/index.js",
+        "generate": "prisma generate"
     },
     "dependencies": {
-        "express": "^4.21.2",
+        "@anthropic-ai/sdk": "^0.36.3",
+        "@prisma/client": "^6.0.0",
+        "@rosetta/shared": "*",
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
-        "@anthropic-ai/sdk": "^0.36.3",
+        "express": "^4.21.2",
         "posthog-node": "^4.4.1"
     },
     "devDependencies": {
-        "nodemon": "^3.1.9"
+        "nodemon": "^3.1.9",
+        "prisma": "^6.0.0"
     }
 }
