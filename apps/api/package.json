@@ -11,7 +11,7 @@
     "dependencies": {
         "@anthropic-ai/sdk": "^0.36.3",
         "@prisma/client": "^6.0.0",
-        "@rosetta/shared": "*",
+        "@rosetta/shared": "file:../../packages/shared",
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",

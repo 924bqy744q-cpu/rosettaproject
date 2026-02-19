@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rosetta/shared": "*",
+    "@rosetta/shared": "file:../../packages/shared",
     "lucide-react": "^0.575.0",
     "posthog-js": "^1.351.3",
     "react": "^19.2.0",
