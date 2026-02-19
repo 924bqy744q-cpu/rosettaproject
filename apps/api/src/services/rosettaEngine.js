@@ -56,15 +56,13 @@ const callHaiku = async (prompt) => {
     }
 };
 
-// ---- Mock/State Management Helper Functions (for Phase 1 w/o DB) ----
-
-// In-memory store for Phase 1 proof-of-concept
-const sessionStore = new Map();
+// ---- Database Management Functions (for Phase 2) ----
+import prisma from '../lib/prisma.js';
 
 /**
  * Stage 1: session/start
  */
-export const startSession = async (conceptRaw) => {
+export const startSession = async (conceptRaw, userId = null) => {
     const sessionId = crypto.randomUUID();
 
     // Basic concept parsing (mock for now, or could use LLM)
@@ -75,15 +73,14 @@ export const startSession = async (conceptRaw) => {
         prerequisites: []
     };
 
-    const sessionData = {
-        session_id: sessionId,
-        created_at: new Date().toISOString(),
-        concept,
-        fingerprint: null, // To be filled
-        state: null
-    };
-
-    sessionStore.set(sessionId, sessionData);
+    const sessionData = await prisma.session.create({
+        data: {
+            id: sessionId,
+            concept: conceptRaw,
+            domain: concept.domain,
+            userId: userId
+        }
+    });
 
     // Return generic fingerprint questions for now (Phase 1 simplicity)
     return {
@@ -99,19 +96,38 @@ export const startSession = async (conceptRaw) => {
  * Stage 2: session/fingerprint
  */
 export const processFingerprint = async (sessionId, answers) => {
-    const session = sessionStore.get(sessionId);
+    const session = await prisma.session.findUnique({ where: { id: sessionId } });
     if (!session) throw new Error('Session not found');
 
     // In a real app, we'd use LLM to extract this.
     // For Phase 1 POC, we'll naively assume the first answer contains the domain.
     const domainGuess = typeof answers === 'string' ? answers.split(' ')[0] : Object.values(answers)[0];
 
-    session.fingerprint = {
-        dominant_domains: [domainGuess, "General Knowledge"],
-        strong_subsumers: [domainGuess], // Treat the domain as the subsumer source
-        reasoning_style: "narrative" // Default
-    };
-    sessionStore.set(sessionId, session);
+    if (session.userId) {
+        // Upsert Fingerprint for authenticated users
+        await prisma.fingerprint.upsert({
+            where: { userId: session.userId },
+            update: {
+                dominantDomains: { push: domainGuess },
+                strongSubsumers: { push: domainGuess }
+            },
+            create: {
+                userId: session.userId,
+                dominantDomains: [domainGuess, "General Knowledge"],
+                strongSubsumers: [domainGuess], // Treat the domain as the subsumer source
+                reasoningStyle: "narrative" // Default
+            }
+        });
+
+        // Ensure DomainJourney exists
+        if (domainGuess) {
+            await prisma.domainJourney.upsert({
+                where: { userId_domain: { userId: session.userId, domain: domainGuess } },
+                update: {},
+                create: { userId: session.userId, domain: domainGuess }
+            });
+        }
+    }
 
     return {
         session_id: sessionId,
@@ -126,11 +142,21 @@ export const processFingerprint = async (sessionId, answers) => {
  * Stage 3: session/explain (THE ENGINE)
  */
 export const generateExplanation = async (sessionId, state) => {
-    const session = sessionStore.get(sessionId);
+    const session = await prisma.session.findUnique({
+        where: { id: sessionId },
+        include: { user: { include: { fingerprint: true } } }
+    });
+
     if (!session) throw new Error('Session not found');
 
-    session.state = state;
-    const { concept, fingerprint } = session;
+    // If an authenticated user doesn't have a fingerprint, use a mock default
+    const fingerprint = session.user?.fingerprint || {
+        dominantDomains: ["General Knowledge"],
+        strongSubsumers: ["Everyday life"],
+        reasoningStyle: "narrative"
+    };
+
+    const concept = { raw: session.concept, domain: session.domain, abstraction_level: 3 };
 
     // 1. Find Subsumer
     const subsumerResult = await callSonnet(
@@ -154,12 +180,18 @@ export const generateExplanation = async (sessionId, state) => {
     );
 
     // Store context for evaluation later
-    session.current_explanation = {
-        subsumer_used: winningSubsumer.subsumer,
-        analogy_type: explanationResult.analogy_type,
-        transfer_test: transferTest // Store the "expected_insight" strictly on server
-    };
-    sessionStore.set(sessionId, session);
+    await prisma.session.update({
+        where: { id: sessionId },
+        data: {
+            subsumerUsed: winningSubsumer.subsumer,
+            explanation: explanationResult,
+            transferTest: {
+                scenario: transferTest.scenario,
+                question: transferTest.question,
+                expected_insight: transferTest.expected_insight // Store the "expected_insight" strictly on server
+            }
+        }
+    });
 
     return {
         session_id: sessionId,
@@ -176,10 +208,10 @@ export const generateExplanation = async (sessionId, state) => {
  * Stage 4: session/evaluate
  */
 export const evaluateResponse = async (sessionId, userResponse) => {
-    const session = sessionStore.get(sessionId);
-    if (!session || !session.current_explanation) throw new Error('Session context not found');
+    const session = await prisma.session.findUnique({ where: { id: sessionId } });
+    if (!session || !session.transferTest) throw new Error('Session context not found');
 
-    const testContext = session.current_explanation.transfer_test; // Contains expected_insight
+    const testContext = session.transferTest; // Contains expected_insight
 
     const evaluation = await callHaiku(
         transferTestEvalPrompt(testContext, userResponse)
@@ -199,8 +231,8 @@ export const evaluateResponse = async (sessionId, userResponse) => {
  */
 export const retryExplanation = async (sessionId, attemptNumber) => {
     // Placeholder for retry logic - would implementation iterating through candidates[1]
-    const session = sessionStore.get(sessionId);
+    const session = await prisma.session.findUnique({ where: { id: sessionId } });
     if (!session) throw new Error('Session not found');
 
-    return generateExplanation(sessionId, session.state); // Just re-run for now (simulated retry)
+    return generateExplanation(sessionId, null); // Just re-run for now (simulated retry)
 };

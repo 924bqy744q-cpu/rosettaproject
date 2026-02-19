@@ -1,9 +1,11 @@
 import { useState, useCallback } from 'react';
 import posthog from 'posthog-js';
+import { useAuth } from './useAuth';
 
 const API_Base = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 export const useSession = () => {
+    const { token } = useAuth();
     const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -14,7 +16,10 @@ export const useSession = () => {
         try {
             const res = await fetch(`${API_Base}/session/start`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({ concept })
             });
             const data = await res.json();
@@ -40,7 +45,10 @@ export const useSession = () => {
         try {
             const res = await fetch(`${API_Base}/session/fingerprint`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({ session_id: sessionId, answers })
             });
             const data = await res.json();
@@ -62,7 +70,10 @@ export const useSession = () => {
         try {
             const res = await fetch(`${API_Base}/session/explain`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({ session_id: sessionId, state })
             });
             const data = await res.json();
@@ -84,7 +95,10 @@ export const useSession = () => {
         try {
             const res = await fetch(`${API_Base}/session/evaluate`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({ session_id: sessionId, user_response: userResponse, clicked: true })
             });
             const data = await res.json();
@@ -116,7 +130,10 @@ export const useSession = () => {
         try {
             const res = await fetch(`${API_Base}/session/retry`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({ session_id: sessionId, attempt_number: attemptNumber })
             });
             const data = await res.json();

@@ -15,8 +15,12 @@ if (POSTHOG_KEY) {
   })
 }
 
+import { AuthProvider } from './hooks/useAuth.jsx'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
 )

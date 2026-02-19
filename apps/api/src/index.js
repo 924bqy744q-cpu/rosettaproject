@@ -15,8 +15,13 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok', version: '1.0.0' });
 });
 
-// Import routes (to be implemented)
+// Import routes
+import authRoutes from './routes/auth.js';
 import sessionRoutes from './routes/session.js';
+import { authenticateUser } from './middleware/authenticateUser.js';
+
+app.use(authenticateUser);
+app.use('/api/auth', authRoutes);
 app.use('/api/session', sessionRoutes);
 
 // Error handling middleware

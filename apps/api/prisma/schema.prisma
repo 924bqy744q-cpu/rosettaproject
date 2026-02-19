@@ -15,8 +15,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessions     Session[]
-  fingerprint  Fingerprint?
+  sessions       Session[]
+  fingerprint    Fingerprint?
+  domainJourneys DomainJourney[]
 }
 
 model Fingerprint {
@@ -45,6 +46,8 @@ model Session {
   explanation    Json?    // Stores the ExplanationOutput object
   transferTest   Json?    // Stores transfer test and result
   
+  timelineEvent LearningTimelineEvent?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -58,4 +61,30 @@ model Concept {
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model DomainJourney {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  domain    String   // e.g., "Python", "Music Theory"
+  
+  timeline  LearningTimelineEvent[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, domain])
+}
+
+model LearningTimelineEvent {
+  id              String        @id @default(uuid())
+  domainJourneyId String
+  domainJourney   DomainJourney @relation(fields: [domainJourneyId], references: [id])
+  sessionId       String        @unique
+  session         Session       @relation(fields: [sessionId], references: [id])
+  
+  // Specific memory details could go here (spaced repetition next due dates, etc.)
+  
+  createdAt DateTime @default(now())
 }

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@rosetta/shared": "file:../../packages/shared",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.575.0",
     "posthog-js": "^1.351.3",
     "react": "^19.2.0",

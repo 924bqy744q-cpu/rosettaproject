@@ -10,7 +10,7 @@ router.post('/start', async (req, res) => {
         if (!concept) {
             return res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Concept is required' } });
         }
-        const result = await engine.startSession(concept);
+        const result = await engine.startSession(concept, req.userId);
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: { code: 'ENGINE_FAILED', message: error.message } });
