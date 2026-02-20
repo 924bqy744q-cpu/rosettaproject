@@ -7,9 +7,9 @@ DOMAIN: ${concept.domain}
 ABSTRACTION LEVEL: ${concept.abstraction_level} / 5
 
 THIS PERSON'S KNOWN MENTAL MODELS:
-- Dominant knowledge domains: ${fingerprint.dominant_domains.join(', ')}
-- Strong subsumers (specific things they understand deeply): ${fingerprint.strong_subsumers.join(', ')}
-- Reasoning style: ${fingerprint.reasoning_style}
+- Dominant knowledge domains: ${fingerprint.dominantDomains.join(', ')}
+- Strong subsumers (specific things they understand deeply): ${fingerprint.strongSubsumers.join(', ')}
+- Reasoning style: ${fingerprint.reasoningStyle}
 
 A subsumer is an existing mental model that shares STRUCTURAL similarity 
 (not surface similarity) with the target concept. 

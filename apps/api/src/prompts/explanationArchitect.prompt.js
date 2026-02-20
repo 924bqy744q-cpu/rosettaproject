@@ -6,7 +6,10 @@ ANCHOR CONCEPT: ${mapping.anchor}
 BRIDGE SENTENCE: ${mapping.bridge_sentence}
 STRUCTURAL MAPPING: ${JSON.stringify(mapping.mapping)}
 
-PERSON'S REASONING STYLE: ${fingerprint.reasoning_style}
+LEARNER PROFILE:
+- Dominant domains: ${fingerprint.dominantDomains.join(', ')}
+- Strong subsumers: ${fingerprint.strongSubsumers.join(', ')}
+- Reasoning style: ${fingerprint.reasoningStyle}
 PREFERRED CHUNK SIZE: ${fingerprint.preferred_chunk_size || 3} chunks
 FRUSTRATION LEVEL: ${state.frustration_level} / 5  (higher = start more gently)
 URGENCY: ${state.urgency} / 5  (higher = be more direct, less build-up)
