@@ -1,0 +1,78 @@
+.login-container {
+    justify-content: center;
+    align-items: center;
+}
+
+.login-main {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.login-header {
+    text-align: center;
+}
+
+.rosetta-brand {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.login-header h1 {
+    font-size: 2rem;
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-2);
+    line-height: 1.2;
+}
+
+.login-subtitle {
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+}
+
+.login-card {
+    background-color: var(--white);
+    padding: var(--space-8);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--surface-3);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.login-action {
+    margin-top: var(--space-2);
+    display: flex;
+    flex-direction: column;
+}
+
+.login-action button {
+    width: 100%;
+    justify-content: center;
+}
+
+.login-error {
+    color: var(--accent);
+    font-size: 0.9rem;
+    background-color: rgba(200, 75, 47, 0.1);
+    padding: var(--space-3);
+    border-radius: 6px;
+    border: 1px solid rgba(200, 75, 47, 0.2);
+}
+
+.login-footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+}
