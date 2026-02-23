@@ -16,7 +16,7 @@ const callSonnet = async (prompt) => {
         throw new Error('ANTHROPIC_API_KEY not found');
     }
     const response = await client.messages.create({
-        model: 'claude-3-sonnet-20240229', // Using avail model
+        model: 'claude-3-haiku-20240307', // Using legacy Haiku to bypass 404
         max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }]
     });
@@ -39,7 +39,7 @@ const callHaiku = async (prompt) => {
         throw new Error('ANTHROPIC_API_KEY not found');
     }
     const response = await client.messages.create({
-        model: 'claude-3-haiku-20240307', // Using avail model
+        model: 'claude-3-haiku-20240307', // Using legacy Haiku to bypass 404
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
     });
@@ -61,6 +61,7 @@ import prisma from '../lib/prisma.js';
 
 /**
  * Stage 1: session/start
+ * Now detects returning users and skips fingerprint if they already have one.
  */
 export const startSession = async (conceptRaw, userId = null) => {
     const sessionId = crypto.randomUUID();
@@ -82,9 +83,28 @@ export const startSession = async (conceptRaw, userId = null) => {
         }
     });
 
-    // Return generic fingerprint questions for now (Phase 1 simplicity)
+    // Check if returning user already has a fingerprint
+    if (userId) {
+        const existingFingerprint = await prisma.fingerprint.findUnique({
+            where: { userId }
+        });
+
+        if (existingFingerprint) {
+            return {
+                session_id: sessionId,
+                skip_fingerprint: true,
+                fingerprint_summary: {
+                    dominantDomains: existingFingerprint.dominantDomains,
+                    reasoningStyle: existingFingerprint.reasoningStyle
+                }
+            };
+        }
+    }
+
+    // New user — ask fingerprint questions
     return {
         session_id: sessionId,
+        skip_fingerprint: false,
         fingerprint_questions: [
             "What is a hobby or skill you are genuinely good at? (e.g., cooking, guitar, chess)",
             "Explain a tricky problem you solved in that domain recently."
@@ -188,10 +208,32 @@ export const generateExplanation = async (sessionId, state) => {
             transferTest: {
                 scenario: transferTest.scenario,
                 question: transferTest.question,
-                expected_insight: transferTest.expected_insight // Store the "expected_insight" strictly on server
+                expected_insight: transferTest.expected_insight
             }
         }
     });
+
+    // Create LearningTimelineEvent if user is authenticated
+    if (session.userId) {
+        const domainGuess = session.domain || 'General';
+        // Ensure DomainJourney exists
+        const journey = await prisma.domainJourney.upsert({
+            where: { userId_domain: { userId: session.userId, domain: domainGuess } },
+            update: {},
+            create: { userId: session.userId, domain: domainGuess }
+        });
+
+        // Create timeline event linking this session to the journey
+        await prisma.learningTimelineEvent.create({
+            data: {
+                domainJourneyId: journey.id,
+                sessionId: sessionId
+            }
+        }).catch(err => {
+            // Ignore duplicate timeline events (sessionId is @unique)
+            if (err.code !== 'P2002') throw err;
+        });
+    }
 
     return {
         session_id: sessionId,
@@ -217,11 +259,18 @@ export const evaluateResponse = async (sessionId, userResponse) => {
         transferTestEvalPrompt(testContext, userResponse)
     );
 
+    // Persist the score on the session's transferTest JSON
+    const updatedTest = { ...session.transferTest, score: evaluation.score };
+    await prisma.session.update({
+        where: { id: sessionId },
+        data: { transferTest: updatedTest }
+    });
+
     return {
         session_id: sessionId,
         user_response: userResponse,
         attempt_number: 1,
-        clicked: evaluation.score === 'integrated', // Derive simple clicked bool from score
+        clicked: evaluation.score === 'integrated',
         ...evaluation
     };
 };

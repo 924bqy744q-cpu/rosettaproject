@@ -1,0 +1,277 @@
+.dashboard {
+    padding: var(--space-8) 0;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-10);
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+}
+
+.dashboard-header-actions {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.btn-new-session {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    padding: var(--space-3) var(--space-6);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-new-session:hover {
+    background: var(--accent);
+    transform: translateY(-1px);
+}
+
+.btn-logout {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: none;
+    color: var(--ink-soft);
+    border: 1px solid var(--surface-3);
+    padding: var(--space-3) var(--space-5);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    border-color: var(--ink-soft);
+    color: var(--ink-mid);
+}
+
+/* Profile Card */
+.profile-card {
+    background: var(--white);
+    border: 1px solid var(--surface-3);
+    border-radius: 16px;
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+    animation: fadeIn 0.5s ease;
+}
+
+.profile-card-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+}
+
+.profile-card-email {
+    font-size: 1rem;
+    color: var(--ink-mid);
+    margin-bottom: var(--space-4);
+}
+
+.profile-domains {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+
+.domain-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    background: var(--surface-2);
+    color: var(--ink-mid);
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    border: 1px solid var(--surface-3);
+}
+
+.reasoning-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    background: var(--accent);
+    color: var(--white);
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+}
+
+/* Section Headers */
+.section-header {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-4);
+}
+
+/* Journey Cards */
+.journeys-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+}
+
+.journey-card {
+    background: var(--white);
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: var(--space-5);
+    transition: all 0.2s ease;
+    cursor: default;
+}
+
+.journey-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.journey-domain {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    margin-bottom: var(--space-2);
+}
+
+.journey-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+}
+
+/* Session History */
+.session-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    animation: fadeIn 0.5s ease;
+}
+
+.session-row {
+    background: var(--white);
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.session-row:hover {
+    border-color: var(--surface-3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.session-row-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.session-concept {
+    font-family: var(--font-display);
+    font-size: 1rem;
+}
+
+.session-meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    display: flex;
+    gap: var(--space-3);
+}
+
+.score-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.score-badge.integrated {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.score-badge.surface {
+    background: #FFF3E0;
+    color: #E65100;
+}
+
+.score-badge.not_yet {
+    background: #FFEBEE;
+    color: #C62828;
+}
+
+.score-badge.pending {
+    background: var(--surface-2);
+    color: var(--ink-soft);
+}
+
+/* Expanded Session Detail */
+.session-detail {
+    background: var(--surface);
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: var(--space-5);
+    margin-top: var(--space-2);
+    animation: fadeIn 0.3s ease;
+}
+
+.session-detail-chunks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.session-detail-chunk {
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--accent);
+}
+
+.session-detail-chunk p {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 1.6;
+}
+
+.session-detail-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-1);
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    padding: var(--space-10) var(--space-5);
+    color: var(--ink-soft);
+}
+
+.empty-state h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--space-2);
+    color: var(--ink-mid);
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-6);
+}

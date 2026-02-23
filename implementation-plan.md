@@ -597,6 +597,7 @@ posthog.capture('session_completed', {
 **Spaced repetition scheduler** — Redis job queue, retrieval in new contexts  
 **Cross-domain bridge detection** — structural similarity search across domain journeys  
 **Return session flow** — system greets with context, proposes continuations  
+**Liquid Glass UI Revision (Backlog)** — implement the Ethereal Studio UI design (layered translucent panels, large typography, colorful blur gradients) across the concept input, fingerprint chat, and explanation views.
 
 ### Database migrations order
 1. Users table

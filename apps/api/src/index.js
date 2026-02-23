@@ -18,11 +18,13 @@ app.get('/health', (req, res) => {
 // Import routes
 import authRoutes from './routes/auth.js';
 import sessionRoutes from './routes/session.js';
+import userRoutes from './routes/user.js';
 import { authenticateUser } from './middleware/authenticateUser.js';
 
 app.use(authenticateUser);
 app.use('/api/auth', authRoutes);
 app.use('/api/session', sessionRoutes);
+app.use('/api/user', userRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

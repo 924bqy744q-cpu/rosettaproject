@@ -20,7 +20,7 @@ const STEPS = {
     RESULT: 6
 };
 
-const Session = () => {
+const Session = ({ onBack }) => {
     const {
         session,
         loading,
@@ -37,8 +37,14 @@ const Session = () => {
     // --- Step 1: Concept Input ---
     const handleConceptSubmit = async () => {
         if (!inputs.concept) return;
-        await startSession(inputs.concept);
-        setStep(STEPS.FINGERPRINT_CHAT);
+        const result = await startSession(inputs.concept);
+
+        // Return-user flow: skip fingerprint if user already has one
+        if (result?.skip_fingerprint) {
+            setStep(STEPS.STATE_CAPTURE);
+        } else {
+            setStep(STEPS.FINGERPRINT_CHAT);
+        }
     };
 
     // --- Step 2: Fingerprint Chat ---
@@ -102,7 +108,11 @@ const Session = () => {
     }
 
     const handleReset = () => {
-        window.location.reload(); // simple reset
+        if (onBack) {
+            onBack(); // go back to Dashboard
+        } else {
+            window.location.reload();
+        }
     };
 
     // RENDER LOGIC
@@ -110,7 +120,15 @@ const Session = () => {
         <div className="container">
             {/* Header / Progress - verify if needed on all screens? Guide says "No navigation bar" but shows progress dots */}
             {step > STEPS.CONCEPT_INPUT && step < STEPS.RESULT && (
-                <div style={{ padding: '20px 0', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ padding: '20px 0', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+                    {onBack && step === STEPS.CONCEPT_INPUT && (
+                        <button
+                            onClick={onBack}
+                            style={{ position: 'absolute', left: 0, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-soft)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}
+                        >
+                            ← Dashboard
+                        </button>
+                    )}
                     <ProgressDots currentStep={step} />
                 </div>
             )}

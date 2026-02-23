@@ -13,6 +13,7 @@ router.post('/start', async (req, res) => {
         const result = await engine.startSession(concept, req.userId);
         res.json(result);
     } catch (error) {
+        console.error('API Error:', error);
         res.status(500).json({ error: { code: 'ENGINE_FAILED', message: error.message } });
     }
 });
@@ -26,6 +27,7 @@ router.post('/fingerprint', async (req, res) => {
         const result = await engine.processFingerprint(session_id, answers);
         res.json(result);
     } catch (error) {
+        console.error('API Error:', error);
         res.status(500).json({ error: { code: 'ENGINE_FAILED', message: error.message } });
     }
 });
@@ -39,6 +41,7 @@ router.post('/explain', async (req, res) => {
         const result = await engine.generateExplanation(session_id, state);
         res.json(result);
     } catch (error) {
+        console.error('API Error:', error);
         res.status(500).json({ error: { code: 'ENGINE_FAILED', message: error.message } });
     }
 });
@@ -52,6 +55,7 @@ router.post('/evaluate', async (req, res) => {
         const result = await engine.evaluateResponse(session_id, user_response);
         res.json(result);
     } catch (error) {
+        console.error('API Error:', error);
         res.status(500).json({ error: { code: 'ENGINE_FAILED', message: error.message } });
     }
 });
@@ -65,6 +69,7 @@ router.post('/retry', async (req, res) => {
         const result = await engine.retryExplanation(session_id, attempt_number);
         res.json(result);
     } catch (error) {
+        console.error('API Error:', error);
         res.status(500).json({ error: { code: 'ENGINE_FAILED', message: error.message } });
     }
 });
