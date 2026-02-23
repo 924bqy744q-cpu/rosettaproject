@@ -18,6 +18,7 @@ model User {
   sessions       Session[]
   fingerprint    Fingerprint?
   domainJourneys DomainJourney[]
+  bridges        CrossDomainBridge[]
 }
 
 model Fingerprint {
@@ -47,6 +48,8 @@ model Session {
   transferTest   Json?    // Stores transfer test and result
   
   timelineEvent LearningTimelineEvent?
+  bridgesAsSource CrossDomainBridge[] @relation("BridgeSource")
+  bridgesAsTarget CrossDomainBridge[] @relation("BridgeTarget")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -84,7 +87,29 @@ model LearningTimelineEvent {
   sessionId       String        @unique
   session         Session       @relation(fields: [sessionId], references: [id])
   
-  // Specific memory details could go here (spaced repetition next due dates, etc.)
+  // Spaced repetition scheduling (SM-2 algorithm)
+  nextReviewAt   DateTime?     // null = not yet scored
+  intervalDays   Int           @default(1)
+  repetitions    Int           @default(0)
+  easeFactor     Float         @default(2.5)
   
   createdAt DateTime @default(now())
+}
+
+model CrossDomainBridge {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  
+  sourceSessionId String
+  targetSessionId String
+  sourceSession   Session  @relation("BridgeSource", fields: [sourceSessionId], references: [id])
+  targetSession   Session  @relation("BridgeTarget", fields: [targetSessionId], references: [id])
+  
+  sharedPattern   String   // e.g. "composable building blocks"
+  confidence      Float    // 0-1 similarity score
+  
+  createdAt       DateTime @default(now())
+  
+  @@unique([sourceSessionId, targetSessionId])
 }

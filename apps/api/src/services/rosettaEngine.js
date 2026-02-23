@@ -4,6 +4,8 @@ import { analogyConstructorPrompt } from '../prompts/analogyConstructor.prompt.j
 import { explanationArchitectPrompt } from '../prompts/explanationArchitect.prompt.js';
 import { transferTestGenPrompt } from '../prompts/transferTestGen.prompt.js';
 import { transferTestEvalPrompt } from '../prompts/transferTestEval.prompt.js';
+import { computeNextReview } from './spacedRepetition.js';
+import { detectBridges } from './bridgeDetector.js';
 
 // Initialize Anthropic client (requires ANTHROPIC_API_KEY env var)
 const client = new Anthropic({
@@ -265,6 +267,32 @@ export const evaluateResponse = async (sessionId, userResponse) => {
         where: { id: sessionId },
         data: { transferTest: updatedTest }
     });
+
+    // Schedule spaced repetition review
+    if (session.userId && evaluation.score) {
+        const timelineEvent = await prisma.learningTimelineEvent.findUnique({
+            where: { sessionId }
+        });
+
+        if (timelineEvent) {
+            const schedule = computeNextReview(
+                evaluation.score,
+                timelineEvent.intervalDays,
+                timelineEvent.easeFactor,
+                timelineEvent.repetitions
+            );
+
+            await prisma.learningTimelineEvent.update({
+                where: { id: timelineEvent.id },
+                data: schedule
+            });
+        }
+
+        // Detect cross-domain bridges
+        detectBridges(sessionId, session.userId).catch(err => {
+            console.error('Bridge detection failed (non-blocking):', err.message);
+        });
+    }
 
     return {
         session_id: sessionId,
